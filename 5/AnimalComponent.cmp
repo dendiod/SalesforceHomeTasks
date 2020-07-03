@@ -1,0 +1,19 @@
+<aura:component controller="AnimalController" implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes, force:lightningQuickAction,force:hasRecordId" access="global">
+    <aura:attribute name="items" type="Animal__c[]"/>
+    <aura:attribute name="myText" type="String" default="1"/>
+    <ui:inputText label="id" value="{!v.myText}"/> 
+    <ui:button label="Call server" press="{!c.doInit}"/>
+    
+    <aura:iteration items="{!v.items}" var="PerItem">
+        <p></p>
+        <p></p>
+        Name:
+        <ui:outputText value="{!PerItem.Name}" /><br/>
+        My_Id:
+        <ui:outputText value="{!PerItem.My_Id__c}" /><br/>
+        Eats:
+        <ui:outputText value="{!PerItem.Eats__c}" /><br/>       
+        Says:
+         <ui:outputText value="{!PerItem.Says__c}" /><br/>
+    </aura:iteration>
+</aura:component>	

@@ -1,0 +1,4 @@
+trigger ChildUpdateTrigger on Child__c (before update) {
+	ParentUpdater pu = new ParentUpdater();
+    pu.updateParents(Trigger.New);
+}

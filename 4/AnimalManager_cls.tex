@@ -1,0 +1,32 @@
+@RestResource(urlMapping='/animals/*')
+global with sharing class AnimalManager {
+    @HttpGet
+    global static List<Animal__c> getAnimalById() {
+        RestRequest request = RestContext.request;
+        // grab the animalId from the end of the URL
+        String animalId = request.requestURI.substring(
+          request.requestURI.lastIndexOf('/')+1);
+        List<Animal__c> result =  [SELECT Id, My_Id__c, Name, Eats__c, Says__c
+                        FROM Animal__c
+                        WHERE My_Id__c = :animalId];
+        
+        return result;
+    }
+
+    @HttpPost
+    global static ID updateAnimalFields() {
+        RestRequest request = RestContext.request;
+        String animalId = request.requestURI.substring(
+            request.requestURI.lastIndexOf('/')+1);
+            Animal__c thisAnimal = [SELECT Id FROM Animal__c WHERE My_Id__c = :animalId];
+        // Deserialize the JSON string into name-value pairs
+        Map<String, String> params = (Map<String, String>)JSON.deserialize(request.requestbody.tostring(),  Map<String, String>.class);
+        // Iterate through each parameter field and value
+        for(String fieldName : params.keySet()) {
+            // Set the field and value on the Animal sObject
+            thisAnimal.put(fieldName, params.get(fieldName));
+        }
+        update thisAnimal;
+        return thisAnimal.Id;
+    }      
+}
