@@ -1,15 +1,12 @@
 public with sharing class AnimalController {
     @AuraEnabled(cacheable=true)
     public static List<Animal__c> searchAnimals(String searchTerm) {
-        searchTerm = searchTerm.deleteWhitespace();
-        List<String>tempIds;
+        searchTerm = searchTerm.deleteWhitespace();        
         if(searchTerm == '') {
-            tempIds = new List<String>();
+            return new List<Animal__c>();
         }
-        else {
-            tempIds = searchTerm.split(','); 
-        }
-             
+
+        List<String>tempIds = searchTerm.split(',');          
         Set<String> ids = new Set<String>();
         ids.addAll(tempIds);    
         List<Animal__c> animals = [
